@@ -48,7 +48,15 @@ class Biblioteca():
         libro = self.buscar_libro(titulo)
         if libro is None:
             return "El libro no existe en la biblioteca."
+        
         libro.devolver()
+        
+        # CONEXIÓN INTERNA: Busca el préstamo activo de este libro y lo da por terminado
+        for prestamo in self._prestamos:
+            if prestamo.obtener_libro().get_titulo().lower() == titulo.lower() and prestamo.comprobar_si_esta_vigente():
+                prestamo.terminar_prestamo()
+                break
+                
         return "Devolucion registrada."
         
         
@@ -126,8 +134,34 @@ class Libro():
         return f"'{self._titulo}' - {self._autor} ({self._genero}) [{estado}]"
 
 class Prestamo():
-    def __init__(self):
-        pass
+    def __init__(self, usuario, libro):
+        self._usuario = usuario                        # Guarda el objeto Usuario
+        self._libro = libro                            # Guarda el objeto Libro
+        self._fecha_inicio = "23/06/2026"              # Fecha fija interna y legible
+        self._esta_vigente = True                      # El préstamo arranca activo
+
+    # - Métodos para Obtener Datos -
+    def obtener_usuario(self):
+        return self._usuario
+
+    def obtener_libro(self):
+        return self._libro
+
+    def obtener_fecha_inicio(self):
+        return self._fecha_inicio
+
+    def comprobar_si_esta_vigente(self):
+        return self._esta_vigente
+
+    # - Acciones -
+    def terminar_prestamo(self):
+        """Se ejecuta cuando el usuario devuelve el libro."""
+        self._esta_vigente = False
+
+    def __str__(self):
+        estado = "En curso" if self._esta_vigente else "Devuelto"
+        return f"Préstamo: {self._usuario.get_nombre()} tiene '{self._libro.get_titulo()}' | Fecha: {self._fecha_inicio} | Estado: {estado}"
+        
         
 class Estrategia_Recomendacion():
     def ejecutar(self, libros: list, preferencia): #se le da la lista de libros de la clase Biblioteca a todas las recomendaciones
@@ -170,4 +204,4 @@ class Recomendacion(): #Almacenamos las estrategias y la usamos en ejecutar_estr
 class Historial():
     def __init__(self):
         pass
-        
+        # prueba
