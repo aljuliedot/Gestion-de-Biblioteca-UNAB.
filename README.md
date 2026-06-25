@@ -9,84 +9,184 @@
 
 ## Descripción
 
-Este repositorio contiene un Sistema de Gestión de Biblioteca, en el cual se podrá gestionar usuarios, libros y prestamos. Su función principal sería la recomendación de libros, en la que cada usuario dependiendo del contenido que lea se le dará posibles sugerencias para llevar. 
+Este repositorio contiene un **Sistema de Gestión de Biblioteca**, en el cual se pueden gestionar usuarios, libros y préstamos. Su función principal es la **recomendación de libros**: según el contenido que lea cada usuario, se le dan posibles sugerencias.
 
-Este proyecto fue programado con el lenguaje de programación Python junto con el uso del paradigma de Programación Orientada a Objetos. Se hizo de esta manera para controlar mejor cada clase y debido a la facilidad de codificar con este lenguaje.
+El proyecto fue desarrollado en **Python** aplicando el paradigma de **Programación Orientada a Objetos**, para controlar mejor cada clase y aprovechar la facilidad de codificar con este lenguaje.
 
-## Instrucciones de Uso
+---
 
-> [!IMPORTANT]
-> Para la función correcta del código, se debe instalar los siguientes módulos: ***datetime***, ***werkzeug.security*** y ***customtkinter.***
+## Requisitos
 
-[EN CONSTRUCCIÓN]
+- **Python 3.10 o superior**
+- Las siguientes librerías:
+  - `werkzeug` — para el hasheo seguro de contraseñas (necesaria siempre).
+  - `customtkinter` — solo si vas a usar la interfaz gráfica.
+
+---
+
+## Instalación
+
+**1. Clonar el repositorio:**
+
+```bash
+git clone https://github.com/aljuliedot/Gestion-de-Biblioteca-UNAB.git
+cd Gestion-de-Biblioteca-UNAB
+```
+
+**2. Instalar las librerías necesarias:**
+
+```bash
+pip install werkzeug customtkinter
+```
+
+> Si `pip` no se reconoce, probá con `python -m pip install werkzeug customtkinter`.
+> Si tu entorno está "externally managed", agregá `--break-system-packages` al final.
+
+---
+
+## Cómo ejecutar
+
+El programa se puede usar de **dos formas**. Las dos usan las mismas clases; cambia solo la interfaz.
+
+### Opción 1 — Aplicación de consola (menú)
+
+```bash
+python main.py
+```
+
+Se abre un menú interactivo con las siguientes opciones:
+
+```
+1. Agregar libro
+2. Ver catalogo completo
+3. Buscar libro
+4. Ver libros disponibles
+5. Prestar libro
+6. Devolver libro
+7. Ver historial global
+8. Ver prestamos activos
+0. Salir
+```
+
+Se elige una opción escribiendo su número y presionando Enter.
+
+### Opción 2 — Interfaz gráfica de escritorio
+
+```bash
+python interfaz.py
+```
+
+Se abre una ventana con un panel lateral (Catálogo, Agregar libro, Recomendar, Historial). Permite prestar y devolver libros con botones, agregar libros desde un formulario y pedir recomendaciones por autor o género.
+
+> La interfaz requiere `customtkinter` instalado. Si solo querés la versión de consola, no hace falta.
+
+---
+
+## Estructura del proyecto
+
+| Archivo | Descripción |
+|---|---|
+| `sistema.py` | Todas las clases del sistema (Biblioteca, Libro, Usuario, Prestamo, Historial, estrategias de recomendación). |
+| `main.py` | Aplicación de consola: el menú interactivo. Usa las clases de `sistema.py`. |
+| `interfaz.py` | Interfaz gráfica de escritorio (CustomTkinter). Usa las clases de `sistema.py`. |
+| `README.md` | Este archivo. |
+
+---
+
+## Notas
+
+- Si en Windows el comando `python` abre la Microsoft Store, usá `py main.py` o la ruta completa de tu intérprete de Python.
+- La interfaz gráfica es un agregado opcional: la aplicación de consola es totalmente funcional por sí sola.
 
 ## Diagrama de Clases
 
 ```mermaid
-flowchart TD
-  n0[+ registrar_prestamo(usuario, titulo)]
-  n1[]
-  n2[+ esta_prestado(): bool]
-  n3[+ get_contrasena()]
-  n1 -->|asocia| n2
-  n0 -->|agrega  0..*| n2
-  n0 -->|registra  0..*| n1
-  n1 -->|asocia| n3
+classDiagram
+    class Biblioteca {
+        -_libros: list
+        -_prestamos: list
+        +agregar_libro(libro)
+        +buscar_libro(titulo) Libro
+        +catalogo() list
+        +libros_disponibles() list
+        +cantidad_disponible() int
+        +registrar_prestamo(usuario, titulo)
+        +registrar_devolucion(titulo)
+    }
 
-  n4[+ ver_historial_usuario(usuario): list]
-  n5[+ ver_prestamos_activos(): list]
-  n6[+ ver_historial_global(): list]
-  n7[- _prestamos: list]
-  n8[]
+    class Libro {
+        -_autor
+        -_genero
+        -_editorial
+        -_esta_prestado: bool
+        +get_titulo() str
+        +get_autor() str
+        +get_genero() str
+        +get_editorial() str
+        +esta_prestado() bool
+        +prestar() bool
+        +devolver()
+    }
 
-  n9[- _titulo]
-  n10[- _autor]
-  n11[- _genero]
+    class Historial {
+        -_prestamos: list
+        +ver_historial_global() list
+        +ver_historial_usuario(usuario) list
+        +ver_prestamos_activos() list
+    }
 
-  n12[+ get_editorial(): str]
-  n13[+ get_genero(): str]
-  n14[+ get_autor(): str]
-  n15[]
-  n16[+ get_titulo(): str]
-  n17[- _editorial]
-  n18[- _esta_prestado: bool]
-  n19[+ devolver()]
-  n20[+ prestar(): bool]
-  n21[+ registrar_devolucion(titulo)]
+    class Usuario {
+        -_nombre
+        -_email
+        -_contrasena
+        +get_nombre()
+        +set_nombre(n)
+        +get_email()
+        +set_email(e)
+        +get_contrasena()
+        +iniciar_sesion(pass)
+    }
 
-  n22[+ ejecutar(libros, preferencia)]
-  n23[+ ejecutar(libros, preferencia)]
-  n24[+ iniciar_sesion(pass)]
-  n25[+ ejecutar(libros, preferencia)]
-  n26[- _libro]
-  n27[- _usuario]
-  n28[- _fecha]
-  n29[- _esta_vigente: bool]
-  n30[+ obtener_libro(): Libro]
-  n31[+ obtener_usuario()]
-  n32[+ obtener_fecha_inicio()]
-  n33[+ set_estrategia(e)]
-  n34[]
-  n35[- _estrategia]
-  n36[+ ejecutar_estrategia(libros, pref)]
-  n37[+ terminar_prestamo()]
-  n38[+ comprobar_si_esta_vigente(): bool]
+    class Prestamo {
+        -_usuario
+        -_libro
+        -_fecha
+        -_esta_vigente: bool
+        +obtener_usuario()
+        +obtener_libro() Libro
+        +obtener_fecha_inicio()
+        +comprobar_si_esta_vigente() bool
+        +terminar_prestamo()
+    }
 
-  n39[]
-  n40[- _prestamos: list]
-  n41[- _libros: list]
-  n42[+ agregar_libro(libro)]
-  n43[+ buscar_libro(titulo): Libro]
-  n44[+ cantidad_disponible(): int]
-  n45[+ libros_disponibles(): list]
-  n46[+ catalogo(): list]
+    class Estrategia_Recomendacion {
+        <<abstracta>>
+        +ejecutar(libros, preferencia)
+    }
 
-  n47[+ set_nombre(n)]
-  n48[+ get_email()]
-  n49[+ set_email(e)]
-  n50[]
-  n51[- _contrasena]
-  n52[+ get_nombre()]
-  n53[- _nombre]
-  n54[- _email]
+    class Estrategia_Autor {
+        +ejecutar(libros, preferencia)
+    }
+
+    class Estrategia_Genero {
+        +ejecutar(libros, preferencia)
+    }
+
+    class Recomendacion {
+        -_estrategia
+        +set_estrategia(e)
+        +ejecutar_estrategia(libros, pref)
+    }
+
+    Biblioteca "0..*" --> "0..*" Libro : agrega
+    Biblioteca "0..*" o-- Prestamo : registra
+    Libro <|-- Libro : asocia
+    Prestamo --> Libro : asocia
+    Prestamo --> "0..*" Usuario : asocia
+    Historial ..> Usuario : consulta
+    Historial o-- "0..*" Libro : analiza
+    Estrategia_Recomendacion <|-- Estrategia_Autor
+    Estrategia_Recomendacion <|-- Estrategia_Genero
+    Recomendacion o-- Estrategia_Genero : usa
+    Recomendacion --> Estrategia_Recomendacion
 ```
