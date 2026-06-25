@@ -19,9 +19,8 @@ Este proyecto fue programado con el lenguaje de programación Python junto con e
 ## Diagrama de Clases
 
 ```mermaid
-graph TD
-    A[Inicio] --> B(Proceso)
-    B --> C{Decisión}
-    C -->|Sí| D[Fin]
-    C -->|No| B
+graph TD;
+    A[Inicio] --> B{Decisión};
+    B -- Sí --> C[Proceso 1];
+    B -- No --> D[Proceso 2];
 ```
