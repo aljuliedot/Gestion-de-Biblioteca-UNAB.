@@ -17,3 +17,11 @@ Este proyecto fue programado con el lenguaje de programación Python junto con e
 [EN CONSTRUCCIÓN]
 
 ## Diagrama de Clases
+
+```mermaid
+graph TD
+    A[Inicio] --> B(Proceso)
+    B --> C{Decisión}
+    C -->|Sí| D[Fin]
+    C -->|No| B
+```
