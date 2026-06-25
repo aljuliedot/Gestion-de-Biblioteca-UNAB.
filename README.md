@@ -14,6 +14,10 @@ Este repositorio contiene un Sistema de Gestión de Biblioteca, en el cual se po
 Este proyecto fue programado con el lenguaje de programación Python junto con el uso del paradigma de Programación Orientada a Objetos. Se hizo de esta manera para controlar mejor cada clase y debido a la facilidad de codificar con este lenguaje.
 
 ## Instrucciones de Uso
+
+> [!IMPORTANT]
+> Para la función correcta del código, se debe instalar los siguientes módulos: datetime, werkzeug.security y customtkinter.
+
 [EN CONSTRUCCIÓN]
 
 ## Diagrama de Clases
