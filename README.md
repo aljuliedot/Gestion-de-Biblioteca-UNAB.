@@ -180,7 +180,6 @@ classDiagram
 
     Biblioteca "0..*" --> "0..*" Libro : agrega
     Biblioteca "0..*" o-- Prestamo : registra
-    Libro <|-- Libro : asocia
     Prestamo --> Libro : asocia
     Prestamo --> "0..*" Usuario : asocia
     Historial ..> Usuario : consulta
