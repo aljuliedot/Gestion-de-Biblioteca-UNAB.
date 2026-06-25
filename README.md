@@ -16,7 +16,7 @@ Este proyecto fue programado con el lenguaje de programación Python junto con e
 ## Instrucciones de Uso
 
 > [!IMPORTANT]
-> ***Para la función correcta del código, se debe instalar los siguientes módulos: datetime, werkzeug.security y customtkinter.***
+> Para la función correcta del código, se debe instalar los siguientes módulos: ***datetime***, ***werkzeug.security*** y ***customtkinter.***
 
 [EN CONSTRUCCIÓN]
 
