@@ -203,6 +203,46 @@ class Recomendacion(): #Almacenamos las estrategias y la usamos en ejecutar_estr
         return self._estrategia.ejecutar(libros, preferencia)
        
 class Historial():
-    def __init__(self):
-        pass
-        # prueba
+    def __init__(self, prestamos_biblioteca: list):
+        # Recibe la lista de préstamos de la clase Biblioteca para analizarla.
+        self._prestamos = prestamos_biblioteca
+        
+    def ver_historial_global(self):
+        # Muestra absolutamente todos los préstamos registrados (activos y devueltos)
+        if not self._prestamos:
+            print("No hay registros en el historial global.")
+            return []
+        
+        print("\n--- HISTORIAL GLOBAL DE PRÉSTAMOS ---")
+        for prestamo in self._prestamos:
+            print(prestamo) # Usa el __str__ que ya definieron en Prestamo
+        return self._prestamos
+
+    def ver_historial_usuario(self, usuario: Usuario):
+        """Filtra y muestra solo los préstamos que pertenecen a un usuario específico."""
+        historial_usuario = []
+        for prestamo in self._prestamos:
+            # Comparamos los objetos o los emails para saber si es el mismo usuario
+            if prestamo.obtener_usuario().get_email() == usuario.get_email():
+                historial_usuario.append(prestamo)
+                
+        print(f"\n--- HISTORIAL DE: {usuario.get_nombre().upper()} ---")
+        if not historial_usuario:
+            print("Este usuario no tiene préstamos registrados.")
+        else:
+            for prestamo in historial_usuario:
+                print(prestamo)
+                
+        return historial_usuario
+
+    def ver_prestamos_activos(self):
+       # Muestra solo los libros que están prestados actualmente (sin devolver).
+        activos = [p for p in self._prestamos if p.comprobar_si_esta_vigente()]
+        
+        print("\n--- PRÉSTAMOS ACTIVOS (SIN DEVOLVER) ---")
+        if not activos:
+            print("No hay préstamos activos en este momento.")
+        else:
+            for prestamo in activos:
+                print(prestamo)
+        return activos
