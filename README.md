@@ -2,10 +2,10 @@
 
 ## Integrantes
 
-Pereyra Joaquín Gabriel.
-Mateo Joaquín Rivero Correa.
-Jorge Ordoñez. 
-Aldana Gonzalez. 
+- Pereyra Joaquín Gabriel.
+- Mateo Joaquín Rivero Correa.
+- Jorge Ordoñez.
+- Aldana Gonzalez.
 
 ## Descripción
 
@@ -15,3 +15,5 @@ Este proyecto fue programado con el lenguaje de programación Python junto con e
 
 ## Instrucciones de Uso
 [EN CONSTRUCCIÓN]
+
+## Diagrama de Clases
