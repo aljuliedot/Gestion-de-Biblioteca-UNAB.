@@ -126,7 +126,7 @@ classDiagram
         +esta_prestado()= bool
         +prestar()= bool
         +devolver()= void
-        +__str__ = str
+        +str()= str
     }
 
     class Historial {
@@ -159,7 +159,7 @@ classDiagram
         +obtener_fecha()= date
         +comprobar_si_esta_vigente()= bool
         +terminar_prestamo()= void
-        +__str__() = str
+        +str() = str
     }
 
     class Estrategia_Recomendacion {
