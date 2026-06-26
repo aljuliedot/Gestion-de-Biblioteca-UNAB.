@@ -138,7 +138,7 @@ classDiagram
     class Usuario {
         -_nombre: str
         -_email: str
-        -_contrasena: str(hash)
+        -_contrasena: str
         +get_nombre() str
         +set_nombre(nombre) void
         +get_email() str
