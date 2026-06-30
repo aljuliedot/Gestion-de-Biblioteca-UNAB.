@@ -1,5 +1,6 @@
 from werkzeug.security import generate_password_hash, check_password_hash #Esto es para la seguridad de contraseñas
 from datetime import date #Esto para controlar fechas
+import json
 
 class Biblioteca():
     def __init__(self):
