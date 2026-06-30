@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Biblioteca UNAB</title>
+    <!-- Google Fonts: Outfit -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome para Iconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Panel Lateral (Sidebar) -->
+        <aside class="sidebar">
+            <div class="logo-area">
+                <i class="fa-solid fa-book-open logo-icon"></i>
+                <h2>Biblioteca UNAB</h2>
+            </div>
+            
+            <nav class="nav-menu">
+                <button class="nav-btn active" id="btn-catalogo" onclick="switchView('catalogo')">
+                    <i class="fa-solid fa-rectangle-list"></i>
+                    <span>Catálogo</span>
+                </button>
+                <button class="nav-btn" id="btn-agregar" onclick="switchView('agregar')">
+                    <i class="fa-solid fa-square-plus"></i>
+                    <span>Agregar libro</span>
+                </button>
+                <button class="nav-btn" id="btn-recomendar" onclick="switchView('recomendar')">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i>
+                    <span>Recomendar</span>
+                </button>
+                <button class="nav-btn" id="btn-historial" onclick="switchView('historial')">
+                    <i class="fa-solid fa-clock-rotate-left"></i>
+                    <span>Historial</span>
+                </button>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <p class="footer-title">Gestión de Biblioteca</p>
+                <p class="footer-sub">Programación Avanzada</p>
+            </div>
+        </aside>
+
+        <!-- Contenedor Principal (Main) -->
+        <main class="main-content">
+            <!-- Barra Superior -->
+            <header class="topbar">
+                <div class="search-box">
+                    <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                    <input type="text" id="catalog-search" placeholder="Buscar libros por título o autor en tiempo real..." onkeyup="filterCatalog()">
+                </div>
+                <div class="user-badge">
+                    <div class="user-avatar">
+                        <i class="fa-solid fa-user-tie"></i>
+                    </div>
+                    <div class="user-info">
+                        <span class="user-name">Invitado</span>
+                        <span class="user-role">Bibliotecario</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Área de Vistas Dinámicas -->
+            <div class="view-viewport">
+                
+                <!-- VISTA: CATÁLOGO -->
+                <section id="view-catalogo" class="app-view active">
+                    <div class="view-header">
+                        <div>
+                            <h1>Catálogo de Libros</h1>
+                            <p class="subtitle" id="catalogo-stats">Cargando estadísticas...</p>
+                        </div>
+                    </div>
+                    
+                    <div class="catalog-grid-wrapper">
+                        <div id="catalog-list" class="catalog-grid">
+                            <!-- Las tarjetas de libros se generarán aquí con JS -->
+                            <div class="loading-state">
+                                <i class="fa-solid fa-spinner fa-spin"></i>
+                                <p>Cargando libros...</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- VISTA: AGREGAR LIBRO -->
+                <section id="view-agregar" class="app-view">
+                    <div class="view-header">
+                        <h1>Agregar Nuevo Libro</h1>
+                        <p class="subtitle">Registra una nueva obra dentro del catálogo de la biblioteca</p>
+                    </div>
+
+                    <div class="card form-card">
+                        <form id="add-book-form" onsubmit="submitBook(event)">
+                            <div class="form-group">
+                                <label for="form-titulo">Título del Libro *</label>
+                                <div class="input-wrapper">
+                                    <i class="fa-solid fa-bookmark input-icon"></i>
+                                    <input type="text" id="form-titulo" placeholder="Ej: Cien Años de Soledad" required>
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="form-autor">Autor *</label>
+                                    <div class="input-wrapper">
+                                        <i class="fa-solid fa-pen-nib input-icon"></i>
+                                        <input type="text" id="form-autor" placeholder="Ej: Gabriel García Márquez" required>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="form-genero">Género *</label>
+                                    <div class="input-wrapper">
+                                        <i class="fa-solid fa-tags input-icon"></i>
+                                        <input type="text" id="form-genero" placeholder="Ej: Novela" required>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="form-editorial">Editorial</label>
+                                <div class="input-wrapper">
+                                    <i class="fa-solid fa-building-columns input-icon"></i>
+                                    <input type="text" id="form-editorial" placeholder="Ej: Sudamericana">
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary submit-btn">
+                                <i class="fa-solid fa-plus-circle"></i>
+                                <span>Agregar al Catálogo</span>
+                            </button>
+                        </form>
+                    </div>
+                </section>
+
+                <!-- VISTA: RECOMENDAR -->
+                <section id="view-recomendar" class="app-view">
+                    <div class="view-header">
+                        <h1>Recomendación de Libros</h1>
+                        <p class="subtitle">Utiliza las estrategias dinámicas de recomendación basadas en tus gustos</p>
+                    </div>
+
+                    <div class="card recommendation-card">
+                        <div class="form-group">
+                            <label for="rec-criterio">Criterio de Recomendación (Estrategia)</label>
+                            <div class="select-wrapper">
+                                <i class="fa-solid fa-gears select-icon"></i>
+                                <select id="rec-criterio">
+                                    <option value="Autor">Recomendar por Autor</option>
+                                    <option value="Genero">Recomendar por Género</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="rec-pref">Preferencia o Filtro</label>
+                            <div class="input-wrapper">
+                                <i class="fa-solid fa-magnifying-glass-chart input-icon"></i>
+                                <input type="text" id="rec-pref" placeholder="Escribe el nombre del autor o género a buscar...">
+                            </div>
+                        </div>
+
+                        <button onclick="getRecommendation()" class="btn btn-primary action-btn">
+                            <i class="fa-solid fa-wand-magic-sparkles"></i>
+                            <span>Buscar Recomendación</span>
+                        </button>
+
+                        <div id="recommendation-result" class="recommendation-result-container">
+                            <!-- El resultado aparecerá aquí con JS -->
+                        </div>
+                    </div>
+                </section>
+
+                <!-- VISTA: HISTORIAL -->
+                <section id="view-historial" class="app-view">
+                    <div class="view-header-row">
+                        <div class="view-header">
+                            <h1>Historial de Préstamos</h1>
+                            <p class="subtitle">Registros de todos los libros prestados y devueltos en el sistema</p>
+                        </div>
+                        <div class="filter-switch">
+                            <button id="filter-all" class="filter-btn active" onclick="loadHistorial(false)">Todos</button>
+                            <button id="filter-active" class="filter-btn" onclick="loadHistorial(true)">Activos</button>
+                        </div>
+                    </div>
+
+                    <div class="historial-list-wrapper">
+                        <div id="historial-list" class="historial-list">
+                            <!-- Las tarjetas de préstamos se generarán aquí con JS -->
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- Sistema de Notificaciones (Toasts) -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <script src="app.js"></script>
+</body>
+</html>
