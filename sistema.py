@@ -60,7 +60,18 @@ class Biblioteca():
                 
         return "Devolucion registrada."
         
-        
+    def guardar_en_json(self, archivo="biblioteca.json"):
+        datos = [libro.to_dict() for libro in self._libros]
+        with open(archivo, "w", encoding="utf-8") as f:
+            json.dump(datos, f, ensure_ascii=False, indent=4)
+
+    def cargar_desde_json(self, archivo="biblioteca.json"):
+        try:
+            with open(archivo, "r", encoding="utf-8") as f:
+                datos = json.load(f)
+        except FileNotFoundError:
+            return  # primera ejecucion: todavia no hay archivo
+        self._libros = [Libro.from_dict(d) for d in datos]    
 
 
 class Usuario():
@@ -133,6 +144,24 @@ class Libro():
     def __str__(self):
         estado = "Prestado" if self._esta_prestado else "Disponible"
         return f"'{self._titulo}' - {self._autor} ({self._genero}) [{estado}]"
+
+    def to_dict(self):
+        # Devuelve los datos del libro como diccionario (para guardar en JSON).
+        return {
+            "titulo": self._titulo,
+            "autor": self._autor,
+            "genero": self._genero,
+            "editorial": self._editorial,
+            "esta_prestado": self._esta_prestado,
+        }
+
+    @staticmethod
+    def from_dict(datos):
+        # Reconstruye un Libro a partir de un diccionario (al cargar el JSON).
+        libro = Libro(datos["titulo"], datos["autor"], datos["genero"], datos["editorial"])
+        if datos.get("esta_prestado"):
+            libro.prestar()
+        return libro
 
 class Prestamo():
     def __init__(self, usuario, libro):

@@ -1,13 +1,12 @@
 """
 Menu interactivo de consola para el Sistema de Gestion de Biblioteca.
-Este archivo NO modifica ninguna clase: solo USA las clases de sistema.py.
-Separar el menu (interfaz) de las clases (logica) es buena practica de diseno.
+Usa las clases de sistema.py. Ahora con persistencia: los libros se guardan
+en un archivo JSON y se cargan automaticamente al abrir el programa.
 """
 from sistema import Biblioteca, Libro, Usuario, Historial
  
-# Usuario de sesion. Sirve para registrar los prestamos: asi se crean objetos
-# Prestamo y el Historial despues tiene datos reales para mostrar.
 USUARIO = Usuario("Invitado", "invitado@biblioteca.com", "1234")
+ARCHIVO = "biblioteca.json"
  
  
 def mostrar_menu():
@@ -32,7 +31,8 @@ def opcion_agregar(biblio):
     genero = input("Genero: ")
     editorial = input("Editorial: ")
     biblio.agregar_libro(Libro(titulo, autor, genero, editorial))
-    print(f"-> Libro '{titulo}' agregado.")
+    biblio.guardar_en_json(ARCHIVO)          # persistimos el cambio
+    print(f"-> Libro '{titulo}' agregado y guardado.")
  
  
 def opcion_catalogo(biblio):
@@ -48,10 +48,7 @@ def opcion_catalogo(biblio):
 def opcion_buscar(biblio):
     titulo = input("Titulo a buscar: ")
     libro = biblio.buscar_libro(titulo)
-    if libro is None:
-        print("-> No se encontro ese libro.")
-    else:
-        print("-> Encontrado:", libro)
+    print("-> No se encontro ese libro." if libro is None else f"-> Encontrado: {libro}")
  
  
 def opcion_disponibles(biblio):
@@ -65,42 +62,32 @@ def opcion_disponibles(biblio):
  
 def opcion_prestar(biblio):
     titulo = input("Titulo a prestar: ")
-    # Usamos registrar_prestamo (no libro.prestar() directo) para que se cree
-    # un objeto Prestamo. Eso es lo que despues lee el Historial.
     print("->", biblio.registrar_prestamo(USUARIO, titulo))
+    biblio.guardar_en_json(ARCHIVO)          # persistimos el cambio de estado
  
  
 def opcion_devolver(biblio):
     titulo = input("Titulo a devolver: ")
     print("->", biblio.registrar_devolucion(titulo))
+    biblio.guardar_en_json(ARCHIVO)
  
  
 def opcion_historial_global(biblio):
-    # Le pasamos al Historial la lista de prestamos de la biblioteca.
-    # (Lo ideal seria un metodo get_prestamos() en Biblioteca; aca, como no
-    #  tocamos esa clase, accedemos a _prestamos directamente.)
-    historial = Historial(biblio._prestamos)
-    historial.ver_historial_global()
+    Historial(biblio._prestamos).ver_historial_global()
  
  
 def opcion_prestamos_activos(biblio):
-    historial = Historial(biblio._prestamos)
-    historial.ver_prestamos_activos()
+    Historial(biblio._prestamos).ver_prestamos_activos()
  
  
 def main():
     biblio = Biblioteca()
+    biblio.cargar_desde_json(ARCHIVO)        # carga lo guardado al iniciar
     opciones = {
-        "1": opcion_agregar,
-        "2": opcion_catalogo,
-        "3": opcion_buscar,
-        "4": opcion_disponibles,
-        "5": opcion_prestar,
-        "6": opcion_devolver,
-        "7": opcion_historial_global,
-        "8": opcion_prestamos_activos,
+        "1": opcion_agregar, "2": opcion_catalogo, "3": opcion_buscar,
+        "4": opcion_disponibles, "5": opcion_prestar, "6": opcion_devolver,
+        "7": opcion_historial_global, "8": opcion_prestamos_activos,
     }
- 
     while True:
         mostrar_menu()
         eleccion = input("Elegi una opcion: ").strip()
