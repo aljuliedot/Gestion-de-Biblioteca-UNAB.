@@ -1,0 +1,44 @@
+[
+    {
+        "titulo": "Rayuela",
+        "autor": "Cortazar",
+        "genero": "Novela",
+        "editorial": "Sudamericana",
+        "esta_prestado": false
+    },
+    {
+        "titulo": "El Aleph",
+        "autor": "Borges",
+        "genero": "Cuento",
+        "editorial": "Emece",
+        "esta_prestado": false
+    },
+    {
+        "titulo": "Ficciones",
+        "autor": "Borges",
+        "genero": "Cuento",
+        "editorial": "Sur",
+        "esta_prestado": false
+    },
+    {
+        "titulo": "Cien Anios de Soledad",
+        "autor": "Garcia Marquez",
+        "genero": "Novela",
+        "editorial": "Sudamericana",
+        "esta_prestado": false
+    },
+    {
+        "titulo": "Bestiario",
+        "autor": "Cortazar",
+        "genero": "Cuento",
+        "editorial": "Sudamericana",
+        "esta_prestado": false
+    },
+    {
+        "titulo": "Mil años de soledad",
+        "autor": "Julio Cortasar",
+        "genero": "Noveka",
+        "editorial": "",
+        "esta_prestado": false
+    }
+]
